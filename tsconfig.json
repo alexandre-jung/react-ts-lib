@@ -16,5 +16,8 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "emitDeclarationOnly": true
-  }
+  },
+  "include": [
+    "src"
+  ]
 }
