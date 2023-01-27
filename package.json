@@ -14,7 +14,10 @@
     "smoke-test": "rm -rf node_modules/ pnpm-lock.yaml dist/ && pnpm install && pnpm build"
   },
   "keywords": [],
-  "author": "Siddharth Venkatesh",
+  "author": "Alexandre Jung",
+  "contributors": [
+    "Siddharth Venkatesh"
+  ],
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.0.1",
