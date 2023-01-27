@@ -10,7 +10,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && rollup -c"
+    "build": "npm run clean && rollup -c",
+    "smoke-test": "rm -rf node_modules/ pnpm-lock.yaml dist/ && pnpm install && pnpm build"
   },
   "keywords": [],
   "author": "Siddharth Venkatesh",
@@ -20,16 +21,16 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "^11.0.0",
-    "@types/react": "^17.0.18",
+    "@types/react": "^18.0.27",
     "postcss": "8.4.21",
-    "react": "^17.0.2",
-    "rimraf": "^3.0.2",
+    "react": "^18.2.0",
+    "rimraf": "^4.1.2",
     "rollup": "^3.11.0",
     "rollup-plugin-dts": "^5.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.1",
+    "rollup-plugin-postcss": "^4.0.2",
     "tslib": "^2.5.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.9.4"
   },
   "peerDependencies": {
     "react": "^17.0.2"
