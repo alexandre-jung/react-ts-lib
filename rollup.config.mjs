@@ -60,6 +60,7 @@ function getBuildConfig ({
         sourcemap: true,
         name: 'react-ts-lib',
         preserveModules: true,
+        // To output CSS one level up: https://github.com/rollup/rollup/issues/3507#issuecomment-616634947
         entryFileNames: `${outDirFromDist}/[name].js`,
       },
     ],
