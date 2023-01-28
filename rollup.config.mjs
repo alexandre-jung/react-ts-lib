@@ -1,72 +1,86 @@
-import { readFile } from 'fs/promises';
+import dts from 'rollup-plugin-dts';
+import external from 'rollup-plugin-peer-deps-external';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
-import terser from '@rollup/plugin-terser';
-import external from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
-import dts from 'rollup-plugin-dts';
+import terser from '@rollup/plugin-terser';
 
 /**
- * [Import assertions](https://nodejs.dev/fr/api/v18/esm/#import-assertions) still is an experimental feature.
- *
- * Once it is made stable, we might use the following import:
- *
- * `import packageJson from './package.json' assert { type: 'json' };`
- *
- * Originally found on [Rollup doc](https://rollupjs.org/command-line-interface/#importing-package-json)
+ * Configuration that generates a bundle with ES modules, preserved structure and type definitions.
  */
+const esmConfig = getBuildConfig({
+  format: 'esm',
+  outDirFromDist: 'esm',
+  tsconfig: 'tsconfig-esm.json',
+});
 
-const packageJson = await loadPackageJson();
+/**
+ * Configuration that generates a bundle with CommonJS modules, preserved structure and type definitions.
+ */
+const cjsConfig = getBuildConfig({
+  format: 'cjs',
+  outDirFromDist: 'cjs',
+  tsconfig: 'tsconfig-cjs.json',
+});
+
+/**
+ * Configuration that generates the type definitions at the root of the dist/ folder.
+ *
+ * It should be included last.
+ */
+const rootTypeDefinitionsConfig = {
+  input: 'dist/esm/types/index.d.ts',
+  output: [
+    {
+      file: 'dist/index.d.ts',
+    },
+  ],
+  external: [/\.css$/],  // Preserve imports.
+  plugins: [dts()],  // Roll-up the .d.ts definition files.
+};
 
 export default [
-  {
+  cjsConfig,
+  esmConfig,
+  rootTypeDefinitionsConfig,
+];
+
+function getBuildConfig ({
+  format,
+  outDirFromDist,
+  tsconfig,
+}) {
+  return {
     input: 'src/index.ts',
     output: [
       {
-        file: packageJson.main,
-        format: 'cjs',
+        dir: 'dist',
+        format,
         sourcemap: true,
         name: 'react-ts-lib',
-      },
-      {
-        file: packageJson.module,
-        format: 'esm',
-        sourcemap: true,
-        name: 'react-ts-lib',
+        preserveModules: true,
+        entryFileNames: `${outDirFromDist}/[name].js`,
       },
     ],
+    external: [/\.css$/],  // Preserve imports.
     plugins: [
       external(),
       resolve(),
       commonjs(),
-      typescript({ tsconfig: './tsconfig.json' }),
+      typescript({ tsconfig }),
       postcss({
         // https://www.npmjs.com/package/rollup-plugin-postcss
         // https://stackoverflow.com/a/59034076
         extract: true,  // Extract to an external CSS file.
         minimize: true,  // Minify the resulting CSS.
-        sourceMap: true,  // As its name suggests.
+        sourceMap: true,
         modules: {
           generateScopedName: false,  // Do not prefix class names with the module name.
         },
+        plugins: [],
       }),
-      terser(),
+      terser(),  // Minify the bundle.
     ],
-  },
-  {
-    input: 'dist/esm/types/index.d.ts',
-    output: [
-      {
-        file: 'dist/index.d.ts',
-        format: 'esm',
-      },
-    ],
-    external: [/\.css$/],
-    plugins: [dts()],
-  },
-];
-
-async function loadPackageJson (filename = 'package.json') {
-  return JSON.parse(await readFile(filename));
+  };
 }

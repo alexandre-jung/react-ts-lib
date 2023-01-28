@@ -9,8 +9,9 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
+    "build": "pnpm run clean && rollup -c",
     "clean": "rimraf dist",
-    "build": "npm run clean && rollup -c",
+    "dev": "pnpm run clean && rollup -c -w",
     "smoke-test": "pnpm dlx rimraf node_modules/ pnpm-lock.yaml dist/ && pnpm install && pnpm build"
   },
   "keywords": [],
