@@ -4,7 +4,7 @@
 
     "target": "es5",
     "module": "esnext",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "declaration": true,
     "sourceMap": true,
     "mapRoot": ".",
@@ -15,10 +15,15 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "emitDeclarationOnly": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "types": [
+      "jest",
+      "react"
+    ]
   },
   "include": [
-    "src"
+    "src/**/*",
+    "jest/setupTests.ts"
   ],
   "exclude": [
     "dist",

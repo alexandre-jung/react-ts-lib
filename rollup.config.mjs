@@ -6,6 +6,9 @@ import typescript from '@rollup/plugin-typescript';
 import postcss from 'rollup-plugin-postcss';
 import terser from '@rollup/plugin-terser';
 
+// Avoid including unwanted files in the final bundle.
+const externalModules = ['jest', 'tslib'];
+
 /**
  * Configuration that generates a bundle with ES modules, preserved structure and type definitions.
  */
@@ -37,20 +40,16 @@ const rootTypeDefinitionsConfig = {
     },
   ],
   // external: [/\.css$/],  // Preserve imports.
-  plugins: [dts()],  // Roll-up the .d.ts definition files.
+  plugins: [dts()], // Roll-up the .d.ts definition files.
+  external: externalModules,
 };
 
-export default [
-  cjsConfig,
+export default [cjsConfig,
   esmConfig,
   rootTypeDefinitionsConfig,
 ];
 
-function getBuildConfig ({
-  format,
-  outDirFromDist,
-  tsconfig,
-}) {
+function getBuildConfig ({ format, outDirFromDist, tsconfig }) {
   return {
     input: 'src/index.ts',
     output: [
@@ -65,6 +64,7 @@ function getBuildConfig ({
       },
     ],
     // external: [/\.css$/],  // Preserve imports.
+    external: externalModules,
     plugins: [
       external(),
       resolve(),
@@ -73,15 +73,15 @@ function getBuildConfig ({
       postcss({
         // https://www.npmjs.com/package/rollup-plugin-postcss
         // https://stackoverflow.com/a/59034076
-        extract: true,  // Extract to an external CSS file.
-        minimize: true,  // Minify the resulting CSS.
+        extract: true, // Extract to an external CSS file.
+        minimize: true, // Minify the resulting CSS.
         sourceMap: true,
         modules: {
-          generateScopedName: false,  // Do not prefix class names with the module name.
+          generateScopedName: false, // Do not prefix class names with the module name.
         },
         plugins: [],
       }),
-      terser(),  // Minify the bundle.
+      terser(), // Minify the bundle.
     ],
   };
 }

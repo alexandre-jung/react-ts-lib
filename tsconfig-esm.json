@@ -3,5 +3,11 @@
   "compilerOptions": {
     "declarationDir": "dist/types",
     "outDir": "dist/esm"
-  }
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "jest/setupTests.ts",
+    "**/*/*.test.tsx"
+  ]
 }
