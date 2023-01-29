@@ -30,13 +30,13 @@ const cjsConfig = getBuildConfig({
  * It should be included last.
  */
 const rootTypeDefinitionsConfig = {
-  input: 'dist/esm/types/index.d.ts',
+  input: 'dist/types/index.d.ts',
   output: [
     {
       file: 'dist/index.d.ts',
     },
   ],
-  external: [/\.css$/],  // Preserve imports.
+  // external: [/\.css$/],  // Preserve imports.
   plugins: [dts()],  // Roll-up the .d.ts definition files.
 };
 
@@ -58,13 +58,13 @@ function getBuildConfig ({
         dir: 'dist',
         format,
         sourcemap: true,
-        name: 'react-ts-lib',
+        // name: 'react-ts-lib',
         preserveModules: true,
         // To output CSS one level up: https://github.com/rollup/rollup/issues/3507#issuecomment-616634947
         entryFileNames: `${outDirFromDist}/[name].js`,
       },
     ],
-    external: [/\.css$/],  // Preserve imports.
+    // external: [/\.css$/],  // Preserve imports.
     plugins: [
       external(),
       resolve(),

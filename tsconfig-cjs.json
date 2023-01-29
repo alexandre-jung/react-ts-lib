@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "declarationDir": "dist/cjs/types",
+    "declarationDir": "dist/types",
     "outDir": "dist/cjs"
   }
 }

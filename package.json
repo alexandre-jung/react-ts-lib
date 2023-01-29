@@ -12,6 +12,7 @@
     "build": "pnpm run clean && rollup -c",
     "clean": "rimraf dist",
     "dev": "pnpm run clean && rollup -c -w",
+    "publish": "",
     "smoke-test": "pnpm dlx rimraf node_modules/ pnpm-lock.yaml dist/ && pnpm install && pnpm build"
   },
   "keywords": [],

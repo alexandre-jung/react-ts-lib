@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "declarationDir": "dist/esm/types",
+    "declarationDir": "dist/types",
     "outDir": "dist/esm"
   }
 }
